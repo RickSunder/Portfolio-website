@@ -113,6 +113,7 @@ const AetherFlowHero = () => {
             const opacity = 1 - distSq / 20000;
             const nearMouse =
               mouse.x !== null &&
+              mouse.y !== null &&
               Math.hypot(particles[a].x - mouse.x, particles[a].y - mouse.y) < mouse.radius;
 
             ctx!.strokeStyle = nearMouse
