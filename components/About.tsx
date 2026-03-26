@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import SectionWrapper from "./ui/SectionWrapper";
 import SectionHeading from "./ui/SectionHeading";
 import AnimatedCard from "./ui/AnimatedCard";
+
+const PROFILE_IMAGE_SRC = "/profile.jpg";
 
 const traits = [
   { icon: "🧠", label: "Analytical", desc: "Data-driven thinking in every decision" },
@@ -38,41 +41,79 @@ export default function About() {
         subtitle="A multidisciplinary tech professional bridging data, development, and business."
       />
 
-      <div className="grid lg:grid-cols-2 gap-8 mb-12">
-        {/* Main intro */}
-        <AnimatedCard delay={0.1} className="lg:col-span-2">
-          <div className="flex flex-col sm:flex-row gap-8 items-start">
-            {/* Avatar placeholder */}
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-400 flex-shrink-0 flex items-center justify-center text-4xl shadow-glow font-black text-white"
-            >
-              RS
-            </motion.div>
-            <div className="space-y-4 text-[#8b9ab5] leading-relaxed">
-              <p>
-                Hi, I&apos;m <span className="text-[#f0f6ff] font-semibold">Rick</span> — an IT
-                enthusiast who has worked across multiple domains within tech. I currently work as a{" "}
-                <span className="text-indigo-300 font-medium">Technical Application Engineer</span>{" "}
-                and Developer at{" "}
-                <span className="text-[#f0f6ff] font-semibold">Enza Zaden</span>, a vegetable seed
-                breeding company.
-              </p>
-              <p>
-                I enjoy continuously learning, tackling new challenges, and building impactful
-                solutions. I see myself as an{" "}
-                <span className="text-cyan-300 font-medium">analytical person</span> who thrives in
-                dynamic environments where adaptability and creative problem-solving are key.
-              </p>
-              <p>
-                Whether it&apos;s building data pipelines, creating low-code applications, or
-                training machine learning models — I bring the same{" "}
-                <span className="text-purple-300 font-medium">growth mindset</span> and enthusiasm
-                to every domain I work in.
-              </p>
+      {/* ── Intro: image + bio ─────────────────────────────────────────── */}
+      <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-start mb-14">
+
+        {/* Profile image */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex-shrink-0 flex flex-col items-center gap-4"
+        >
+          {/* Glow ring + image wrapper */}
+          <motion.div
+            whileHover={{ scale: 1.04 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="relative w-52 h-52 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-3xl"
+          >
+            {/* Animated gradient border */}
+            <div className="absolute -inset-[3px] rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-400 opacity-70 blur-[2px]" />
+            <div className="absolute -inset-[3px] rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-400 opacity-40" />
+
+            {/* Photo */}
+            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-[#1e2d3d]">
+              <Image
+                src={PROFILE_IMAGE_SRC}
+                alt="Rick Sünder — profile photo"
+                fill
+                sizes="(max-width: 640px) 208px, (max-width: 1024px) 256px, 288px"
+                className="object-cover object-top"
+                unoptimized
+                priority
+              />
+              {/* Subtle inner vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#080c14]/40 via-transparent to-transparent pointer-events-none" />
             </div>
-          </div>
-        </AnimatedCard>
+          </motion.div>
+
+        </motion.div>
+
+        {/* Bio text */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="flex-1 space-y-5 text-[#8b9ab5] leading-relaxed text-lg"
+        >
+          <p>
+            Hi, I&apos;m <span className="text-[#f0f6ff] font-semibold">Rick</span> — an IT
+            enthusiast who has worked across multiple domains within tech. I currently work as a{" "}
+            <span className="text-indigo-300 font-medium">Technical Application Engineer</span>{" "}
+            and Developer at{" "}
+            <span className="text-[#f0f6ff] font-semibold">Enza Zaden</span>, a vegetable seed
+            breeding company.
+          </p>
+          <p>
+            I enjoy continuously learning, tackling new challenges, and building impactful
+            solutions. I see myself as an{" "}
+            <span className="text-cyan-300 font-medium">analytical person</span> who thrives in
+            dynamic environments where adaptability and creative problem-solving are key.
+          </p>
+          <p>
+            Whether it&apos;s building data pipelines, creating low-code applications, or
+            training machine learning models — I bring the same{" "}
+            <span className="text-purple-300 font-medium">growth mindset</span> and enthusiasm
+            to every domain I work in.
+          </p>
+
+  
+        </motion.div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8 mb-12">
 
         {/* Personality traits */}
         <div>

@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { ArrowDown, Sparkles } from "lucide-react";
+import AetherFlowHero from "./ui/aether-flow-hero";
 
 // [21ST_DEV_COMPONENT_HERO]
 
@@ -48,35 +49,6 @@ function AnimatedRole() {
   );
 }
 
-// Floating orbs background
-function FloatingOrbs() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <motion.div
-        animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]"
-      />
-      <motion.div
-        animate={{ x: [0, -25, 0], y: [0, 15, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-1/3 right-1/4 w-80 h-80 bg-cyan-500/8 rounded-full blur-[100px]"
-      />
-      <motion.div
-        animate={{ x: [0, 15, 0], y: [0, 25, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-purple-600/8 rounded-full blur-[80px]"
-      />
-    </div>
-  );
-}
-
-// Animated grid
-function GridBackground() {
-  return (
-    <div className="absolute inset-0 grid-bg opacity-60 pointer-events-none" />
-  );
-}
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -89,10 +61,10 @@ export default function Hero() {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <GridBackground />
-      <FloatingOrbs />
+      {/* Interactive particle canvas background */}
+      <AetherFlowHero />
 
-      {/* Radial vignette */}
+      {/* Radial vignette over the canvas */}
       <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-[#080c14] pointer-events-none" />
 
       <motion.div
