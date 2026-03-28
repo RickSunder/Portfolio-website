@@ -9,7 +9,8 @@
       "Read(//c/Users/rick/AppData/Roaming/**)",
       "Read(//c//**)",
       "Read(//c/Users/rick/AppData/**)",
-      "Bash(cmd.exe /c \"where node 2>&1 && where npm 2>&1 && where npx 2>&1\")"
+      "Bash(cmd.exe /c \"where node 2>&1 && where npm 2>&1 && where npx 2>&1\")",
+      "Bash(npx next:*)"
     ]
   }
 }
