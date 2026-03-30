@@ -8,14 +8,38 @@ import SectionHeading from "./ui/SectionHeading";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  // "website" is the honeypot field — never shown to real users
+  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // UI only — no backend wired
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setForm({ name: "", email: "", message: "" });
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSent(true);
+      setForm({ name: "", email: "", message: "", website: "" });
+      setTimeout(() => setSent(false), 5000);
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -126,6 +150,20 @@ export default function Contact() {
           onSubmit={handleSubmit}
           className="glass rounded-2xl border border-[#1e2d3d] p-6 space-y-4"
         >
+          {/* Honeypot — hidden from real users, bots fill it and get silently blocked */}
+          <div aria-hidden="true" tabIndex={-1} style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }}>
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              type="text"
+              name="website"
+              autoComplete="off"
+              tabIndex={-1}
+              value={form.website}
+              onChange={(e) => setForm({ ...form, website: e.target.value })}
+            />
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
               <label className="block text-xs font-mono text-[#4a5568] mb-1.5">Name</label>
@@ -163,16 +201,31 @@ export default function Contact() {
             />
           </div>
 
+          {error && (
+            <p className="text-xs text-red-400 font-mono text-center">
+              // {error}
+            </p>
+          )}
+
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(99,102,241,0.4)" }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+            disabled={loading || sent}
+            whileHover={!loading && !sent ? { scale: 1.02, boxShadow: "0 0 30px rgba(99,102,241,0.4)" } : {}}
+            whileTap={!loading && !sent ? { scale: 0.98 } : {}}
+            className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {sent ? (
               <>
                 <CheckCircle size={18} />
                 Message Sent!
+              </>
+            ) : loading ? (
+              <>
+                <svg className="animate-spin" width={18} height={18} viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                </svg>
+                Sending...
               </>
             ) : (
               <>
@@ -181,10 +234,6 @@ export default function Contact() {
               </>
             )}
           </motion.button>
-
-          <p className="text-xs text-center text-[#4a5568] font-mono">
-            // UI only — backend integration not yet wired
-          </p>
         </motion.form>
       </div>
     </SectionWrapper>
