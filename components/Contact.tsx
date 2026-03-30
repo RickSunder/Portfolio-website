@@ -117,19 +117,21 @@ export default function Contact() {
               {
                 icon: Linkedin,
                 label: "LinkedIn",
-                href: "#",
+                href: "https://www.linkedin.com/in/ricksunder/",
                 color: "hover:text-blue-400 hover:border-blue-500/30",
               },
               {
                 icon: Github,
                 label: "GitHub",
-                href: "#",
+                href: "https://github.com/RickSunder/",
                 color: "hover:text-[#f0f6ff] hover:border-[#f0f6ff]/20",
               },
             ].map(({ icon: Icon, label, href, color }) => (
               <motion.a
                 key={label}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className={`flex items-center gap-2 px-4 py-2.5 glass rounded-xl border border-[#1e2d3d] text-[#8b9ab5] text-sm font-medium transition-all duration-200 ${color}`}
